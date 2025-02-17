@@ -1,14 +1,46 @@
+import { Tabs } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Stack } from "expo-router";
 
-export default function RootLayout() {
+export default function TabLayout() {
   return (
-    <Stack>
-      <Stack.Screen
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: "#FFD33D",
+        headerStyle: { backgroundColor: "#25292E" },
+        headerShadowVisible: false,
+        headerTintColor: "#FFF",
+        tabBarStyle: { backgroundColor: "#25292E" },
+      }}
+    >
+      <Tabs.Screen
         name="index"
-        options={{ headerLeft: () => <></>, title: "Home" }}
+        options={{
+          title: "Home",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "home-sharp" : "home-outline"}
+              color={color}
+              size={24}
+            />
+          ),
+        }}
       />
-      <Stack.Screen name="about" options={{ title: "About" }} />
-    </Stack>
+      <Tabs.Screen
+        name="about"
+        options={{
+          title: "About",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={
+                focused ? "information-circle" : "information-circle-outline"
+              }
+              color={color}
+              size={24}
+            />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }

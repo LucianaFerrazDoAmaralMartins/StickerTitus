@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { View, StyleSheet } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { StyleSheet, View } from "react-native";
 
-import ImageViewer from "@/components/ImageViewer";
 import Button from "@/components/Button";
-import IconButton from "@/components/IconButton";
 import CircleButton from "@/components/CircleButton";
+import EmojiPicker from "@/components/EmojiPicker";
+import IconButton from "@/components/IconButton";
+import ImageViewer from "@/components/ImageViewer";
 
 const PlaceholderImage = require("@/assets/images/background-image.jpg");
 
@@ -13,8 +14,8 @@ export default function Index() {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     undefined
   );
-
   const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -31,14 +32,23 @@ export default function Index() {
     }
   };
 
-  const onReset =() => {
+  const onReset = () => {
     setShowAppOptions(false);
   };
-  const onAddSticker = () => {};
+
+  const onAddSticker = () => {
+    setIsModalVisible(true);
+  };
+  
+  const onModalClose = () => {
+    setIsModalVisible(false);
+  }
+
+  const onSaveImageAsync = async () => {};
 
   return (
     <View style={styles.container}>
-      <View style={styles.ImageContainer}>
+      <View style={styles.imageContainer}>
         <ImageViewer
           imgSource={PlaceholderImage}
           selectedImage={selectedImage}
@@ -49,8 +59,12 @@ export default function Index() {
         <View style={styles.optionsContainer}>
           <View style={styles.optionsRow}>
             <IconButton icon="refresh" label="Reset" onPress={onReset} />
-            <CircleButton onPress={() => {}} />
-            <IconButton icon="save-alt" label="Save" onPress={onAddSticker} />
+            <CircleButton onPress={onAddSticker} />
+            <IconButton
+              icon="save-alt"
+              label="Save"
+              onPress={onSaveImageAsync}
+            />
           </View>
         </View>
       ) : (
@@ -66,6 +80,7 @@ export default function Index() {
           />
         </View>
       )}
+      <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}></EmojiPicker>
     </View>
   );
 }
@@ -73,11 +88,11 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "#25292E",
   },
-  ImageContainer: {
+  imageContainer: {
     flex: 1,
     paddingTop: 28,
   },
